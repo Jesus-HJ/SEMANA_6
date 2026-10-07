@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { ReviewsSection } from '../components/ReviewsSection'
 import { SectionHeading } from '../components/SectionHeading'
 
 const features = [
@@ -82,6 +83,8 @@ export function HomePage() {
           </article>
         </div>
       </section>
+
+      <ReviewsSection />
 
       <section className="home-cta">
         <p className="eyebrow">Tu próxima comida favorita</p>

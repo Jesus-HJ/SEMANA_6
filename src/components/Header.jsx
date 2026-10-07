@@ -32,7 +32,7 @@ export function Header() {
           onClick={() => setIsCartOpen(true)}
         >
           <span className="cart-trigger-label">Tu pedido</span>
-          <span className="cart-trigger-icon" aria-hidden="true">
+          <span className="cart-trigger-icon" data-cart-target aria-hidden="true" key={count}>
             <svg viewBox="0 0 24 24" fill="none">
               <path d="M3 4h2l2.1 10.1a2 2 0 0 0 2 1.6h8.4a2 2 0 0 0 1.9-1.4L21 8H6" />
               <circle cx="10" cy="20" r="1" />

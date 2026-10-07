@@ -6,6 +6,50 @@ import { useMenu } from '../hooks/useMenu'
 
 const categories = ['Todo', 'Entradas', 'Principales', 'Desayuno', 'Bebidas', 'Postres']
 
+function animateProductToCart(image) {
+  const cartTarget = document.querySelector('[data-cart-target]')
+
+  if (!cartTarget || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    return
+  }
+
+  const imageBounds = image.getBoundingClientRect()
+  const cartBounds = cartTarget.getBoundingClientRect()
+  const imageClone = image.cloneNode()
+  const deltaX = cartBounds.left + cartBounds.width / 2 - (imageBounds.left + imageBounds.width / 2)
+  const deltaY = cartBounds.top + cartBounds.height / 2 - (imageBounds.top + imageBounds.height / 2)
+
+  Object.assign(imageClone.style, {
+    position: 'fixed',
+    zIndex: '100',
+    top: `${imageBounds.top}px`,
+    left: `${imageBounds.left}px`,
+    width: `${imageBounds.width}px`,
+    height: `${imageBounds.height}px`,
+    borderRadius: '4px',
+    objectFit: 'cover',
+    pointerEvents: 'none',
+    transformOrigin: 'center',
+  })
+  imageClone.setAttribute('aria-hidden', 'true')
+  document.body.append(imageClone)
+
+  const flight = imageClone.animate(
+    [
+      { transform: 'translate(0, 0) scale(1)', opacity: 1, borderRadius: '4px' },
+      {
+        transform: `translate(${deltaX}px, ${deltaY}px) scale(0.12)`,
+        opacity: 0.2,
+        borderRadius: '50%',
+      },
+    ],
+    { duration: 650, easing: 'cubic-bezier(0.45, 0, 0.85, 0.4)', fill: 'forwards' },
+  )
+
+  flight.onfinish = () => imageClone.remove()
+  flight.oncancel = () => imageClone.remove()
+}
+
 export function MenuPage() {
   const { status, items, error, retry } = useMenu()
   const { addItem } = useCart()
@@ -78,7 +122,15 @@ export function MenuPage() {
                     <strong>S/ {item.price.toFixed(2)}</strong>
                   </div>
                   <p>{item.description}</p>
-                  <button className="add-to-cart" type="button" onClick={() => addItem(item)}>
+                  <button
+                    className="add-to-cart"
+                    type="button"
+                    onClick={(event) => {
+                      const productImage = event.currentTarget.closest('.menu-card').querySelector('.menu-card-image')
+                      animateProductToCart(productImage)
+                      addItem(item)
+                    }}
+                  >
                     Agregar al pedido <span aria-hidden="true">+</span>
                   </button>
                 </div>

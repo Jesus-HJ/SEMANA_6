@@ -27,6 +27,7 @@ npm run lint
 - `/menu`: menú cargado con Axios desde `https://dummyjson.com/products/category/groceries?limit=30`; permite filtrar por categoría y agregar platos al carrito.
 - `/pedido`: resumen del carrito y formulario controlado de entrega y pago de demostración. No envía datos ni procesa pagos.
 - Cualquier ruta desconocida muestra la página 404.
+- La portada incluye comentarios con puntuación; se guardan localmente en `localStorage` en el navegador actual.
 
 `BrowserRouter`, `Routes`, `Route` y `NavLink` gestionan la navegación sin recargar el documento. El contexto `CartProvider` comparte el carrito entre el menú, la cabecera, el cajón del carrito y el formulario.
 
